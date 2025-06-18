@@ -7,10 +7,9 @@
 #include <iostream>
 #include <cstdint>
 
-using IpType = std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>;
-
 namespace otus
 {
+    using IpType = std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>;
     std::vector<std::string> split(const std::string &str, char d);
     IpType split_to_ip(const std::string &ipStr);
 

@@ -2,6 +2,7 @@
 
 #include "lib.h"
 #include "lib_ip_filter.h"
+#include "custom_tie.h"
 
 #include <vector>
 #include <boost/test/unit_test.hpp>
@@ -86,7 +87,7 @@ BOOST_AUTO_TEST_CASE(test_split_to_tuple_6)
 
 BOOST_AUTO_TEST_CASE(test_sort_1)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {100u, 0u, 0u, 0u},
         {200u, 0u, 0u, 0u},
         {255u, 0u, 0u, 0u}};
@@ -98,7 +99,7 @@ BOOST_AUTO_TEST_CASE(test_sort_1)
 
 BOOST_AUTO_TEST_CASE(test_sort_2)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {200u, 100u, 0u, 0u},
         {200u, 200u, 0u, 0u},
         {200u, 0u, 0u, 0u}};
@@ -111,7 +112,7 @@ BOOST_AUTO_TEST_CASE(test_sort_2)
 
 BOOST_AUTO_TEST_CASE(test_filter_one_arg_1)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {1u, 100u, 0u, 0u},
         {200u, 200u, 200u, 200u},
         {1u, 200u, 0u, 0u}};
@@ -125,7 +126,7 @@ BOOST_AUTO_TEST_CASE(test_filter_one_arg_1)
 
 BOOST_AUTO_TEST_CASE(test_filter_one_arg_2)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {0u, 100u, 0u, 0u},
         {0u, 200u, 0u, 0u},
         {0u, 0u, 0u, 0u}};
@@ -137,7 +138,7 @@ BOOST_AUTO_TEST_CASE(test_filter_one_arg_2)
 
 BOOST_AUTO_TEST_CASE(test_filter_two_arg_1)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {46u, 70u, 100u, 0u},
         {0u, 200u, 0u, 0u},
         {0u, 0u, 0u, 0u}};
@@ -149,7 +150,7 @@ BOOST_AUTO_TEST_CASE(test_filter_two_arg_1)
 
 BOOST_AUTO_TEST_CASE(test_filter_two_arg_2)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {45u, 71u, 100u, 0u},
         {46u, 71u, 0u, 0u},
         {0u, 0u, 0u, 0u}};
@@ -161,7 +162,7 @@ BOOST_AUTO_TEST_CASE(test_filter_two_arg_2)
 
 BOOST_AUTO_TEST_CASE(test_filter_any_1)
 {
-    std::vector<IpType> v{
+    std::vector<otus::IpType> v{
         {0u, 0u, 0u, 0u},
         {46u, 70u, 80u, 90u},
         {0u, 0u, 0u, 46u}};
@@ -171,6 +172,29 @@ BOOST_AUTO_TEST_CASE(test_filter_any_1)
     BOOST_CHECK(result.size() == 2 &&
                 std::get<0>(result[0]) == 46 && std::get<1>(result[0]) == 70 && std::get<2>(result[0]) == 80 && std::get<3>(result[0]) == 90 &&
                 std::get<0>(result[1]) == 0 && std::get<1>(result[1]) == 0 && std::get<2>(result[1]) == 0 && std::get<3>(result[1]) == 46);
+}
+
+BOOST_AUTO_TEST_CASE(test_custom_tie)
+{
+
+    auto getPerson = []()
+    {
+        const std::string name = "Petia";
+        const std::string secondName = "Ivanoff";
+        const std::size_t age = 23;
+        const std::string department = "Sale";
+        return std::make_tuple(name, secondName, age, department);
+    };
+
+    std::string name = "";
+    std::string secondName = "";
+    std::size_t age;
+    std::string department = "";
+
+    otus::custom_tie(name, secondName, age, department) = getPerson();
+    std::cout << name << " " << secondName << " " << age << " " << department << "\n";
+
+    BOOST_CHECK(name == "Petia" && secondName == "Ivanoff" && age == 23 && department == "Sale");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

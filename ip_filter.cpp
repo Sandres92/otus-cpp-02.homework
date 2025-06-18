@@ -8,6 +8,7 @@
 
 #include "lib.h"
 #include "lib_ip_filter.h"
+#include "custom_tie.h"
 
 #define UNUSED(varible) void(varible)
 
@@ -105,7 +106,7 @@ int main(int argc, char const *argv[])
             throw std::runtime_error("Could not open ip_filter.tsv file");
         }
 
-        std::vector<IpType> ip_pool;
+        std::vector<otus::IpType> ip_pool;
         for (std::string line; std::getline(in, line);)
         {
             std::vector<std::string> v = otus::split(line, '\t');
@@ -113,16 +114,16 @@ int main(int argc, char const *argv[])
         }
 
         otus::sort(ip_pool.rbegin(), ip_pool.rend());
-        otus::printIp(ip_pool.cbegin(), ip_pool.cend());
+        // otus::printIp(ip_pool.cbegin(), ip_pool.cend());
 
         auto filter_1 = otus::filter(ip_pool.begin(), ip_pool.end(), 1);
-        otus::printIp(filter_1.cbegin(), filter_1.cend());
+        // otus::printIp(filter_1.cbegin(), filter_1.cend());
 
         auto filter_46_70 = otus::filter(ip_pool.begin(), ip_pool.end(), 46, 70);
-        otus::printIp(filter_46_70.cbegin(), filter_46_70.cend());
+        // otus::printIp(filter_46_70.cbegin(), filter_46_70.cend());
 
         auto filter_any_46 = otus::filter_any(ip_pool.begin(), ip_pool.end(), 46);
-        otus::printIp(filter_any_46.cbegin(), filter_any_46.cend());
+        // otus::printIp(filter_any_46.cbegin(), filter_any_46.cend());
 
         // for (std::vector<std::vector<std::string>>::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
         //{
