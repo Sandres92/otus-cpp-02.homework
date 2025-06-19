@@ -93,6 +93,8 @@ void printIp(Iterator first, Iterator last)
 
 int main(int argc, char const *argv[])
 {
+    // UNUSED(argc);
+    // UNUSED(argv);
     (void)argc;
     (void)argv;
 
