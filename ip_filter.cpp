@@ -10,8 +10,6 @@
 #include "lib_ip_filter.h"
 #include "custom_tie.h"
 
-#define UNUSED(varible) void(varible)
-
 // ("",  '.') -> [""]
 // ("11", '.') -> ["11"]
 // ("..", '.') -> ["", "", ""]
@@ -19,82 +17,8 @@
 // (".11", '.') -> ["", "11"]
 // ("11.22", '.') -> ["11", "22"]
 
-/*std::vector<std::string> split(const std::string &str, char d)
-{
-    std::vector<std::string> r;
-
-    std::string::size_type start = 0;
-    std::string::size_type stop = str.find_first_of(d);
-    while (stop != std::string::npos)
-    {
-        r.push_back(str.substr(start, stop - start));
-
-        start = stop + 1;
-        stop = str.find_first_of(d, start);
-    }
-
-    r.push_back(str.substr(start));
-
-    return r;
-}
-auto SplitToIp(const std::string &ipStr)
-{
-    std::vector<std::string> ipSplit = split(ipStr, '.');
-    if (ipSplit.size() < 4)
-    {
-        throw std::runtime_error("Wrong format ip " + ipStr);
-    }
-
-    return std::make_tuple(ipSplit[0].empty() ? 0 : std::stoi(ipSplit[0]),
-                           ipSplit[1].empty() ? 0 : std::stoi(ipSplit[1]),
-                           ipSplit[2].empty() ? 0 : std::stoi(ipSplit[2]),
-                           ipSplit[3].empty() ? 0 : std::stoi(ipSplit[3]));
-}
-
-template <typename Iterator>
-auto filter(Iterator first, Iterator last, int filter)
-{
-    std::vector<std::tuple<int, int, int, int>> filtered;
-    std::copy_if(first, last, std::back_inserter(filtered),
-                 [filter](const std::tuple<int, int, int, int> &ip)
-                 { return std::get<0>(ip) == filter; });
-    return filtered;
-}
-
-template <typename Iterator>
-auto filter(Iterator first, Iterator last, int filter0, int filter1)
-{
-    std::vector<std::tuple<int, int, int, int>> filtered;
-    std::copy_if(first, last, std::back_inserter(filtered),
-                 [filter0, filter1](const std::tuple<int, int, int, int> &ip)
-                 { return std::get<0>(ip) == filter0 && std::get<1>(ip) == filter1; });
-    return filtered;
-}
-
-template <typename Iterator>
-auto filter_any(Iterator first, Iterator last, int filter)
-{
-    std::vector<std::tuple<int, int, int, int>> filtered;
-    std::copy_if(first, last, std::back_inserter(filtered),
-                 [filter](const std::tuple<int, int, int, int> &ip)
-                 { return std::get<0>(ip) == filter || std::get<1>(ip) == filter ||
-                          std::get<2>(ip) == filter || std::get<3>(ip) == filter; });
-    return filtered;
-}
-
-template <typename Iterator>
-void printIp(Iterator first, Iterator last)
-{
-    for (auto ip = first; ip != last; ++ip)
-    {
-        std::cout << std::get<0>(*ip) << "." << std::get<1>(*ip) << "." << std::get<2>(*ip) << "." << std::get<3>(*ip) << "\n";
-    }
-} */
-
 int main(int argc, char const *argv[])
 {
-    // UNUSED(argc);
-    // UNUSED(argv);
     (void)argc;
     (void)argv;
 
@@ -114,27 +38,16 @@ int main(int argc, char const *argv[])
         }
 
         otus::sort(ip_pool.rbegin(), ip_pool.rend());
-        // otus::printIp(ip_pool.cbegin(), ip_pool.cend());
+        otus::printIp(ip_pool.cbegin(), ip_pool.cend());
 
         auto filter_1 = otus::filter(ip_pool.begin(), ip_pool.end(), 1);
-        // otus::printIp(filter_1.cbegin(), filter_1.cend());
+        otus::printIp(filter_1.cbegin(), filter_1.cend());
 
         auto filter_46_70 = otus::filter(ip_pool.begin(), ip_pool.end(), 46, 70);
-        // otus::printIp(filter_46_70.cbegin(), filter_46_70.cend());
+        otus::printIp(filter_46_70.cbegin(), filter_46_70.cend());
 
         auto filter_any_46 = otus::filter_any(ip_pool.begin(), ip_pool.end(), 46);
-        // otus::printIp(filter_any_46.cbegin(), filter_any_46.cend());
-
-        // for (std::vector<std::vector<std::string>>::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-        //{
-        //     for (std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
-        //     {
-        //         if (ip_part != ip->cbegin())
-        //         {
-        //             std::cout << ".";
-        //         }
-        //         std::cout << *ip_part;
-        //     }0
+        otus::printIp(filter_any_46.cbegin(), filter_any_46.cend());
 
         // 222.173.235.246
         // 222.130.177.64

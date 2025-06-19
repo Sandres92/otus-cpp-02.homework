@@ -1,6 +1,7 @@
 #include "lib_ip_filter.h"
 
 #include <stdexcept>
+
 namespace otus
 {
     std::vector<std::string> split(const std::string &str, char d)

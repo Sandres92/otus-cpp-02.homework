@@ -176,7 +176,6 @@ BOOST_AUTO_TEST_CASE(test_filter_any_1)
 
 BOOST_AUTO_TEST_CASE(test_custom_tie)
 {
-
     auto getPerson = []()
     {
         const std::string name = "Petia";
